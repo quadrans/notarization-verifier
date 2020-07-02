@@ -1,0 +1,13 @@
+[Unit]
+Description=uWSGI instance to serve notecheck
+After=network.target
+
+[Service]
+User=quadrans
+Group=www-data
+WorkingDirectory=/var/www/node
+Environment="PATH=/var/www/node/nodeenv/bin"
+ExecStart=/var/www/node/nodeenv/bin/uwsgi --ini wsgi.ini
+
+[Install]
+WantedBy=multi-user.target
