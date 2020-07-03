@@ -110,111 +110,53 @@
 
 <!--------------------------------------------------------------------------->
 
-            <h2 style="overflow-wrap: break-word; word-break: break-word;"><b>${evidence}</b></h2>
+            <h2 style="overflow-wrap: break-word; word-break: break-word;"><b>Notarization Evidence</b></h2>
 
-            <p>Here the step-by-step procedure for the independent verification of the data or document notarization :</p>
-            <p>This is a courtesy page provided by Quadrans Foundation for convenience to easier proove the 
-            correct notarization of the submitted data hash.<br>
-            This is a <b>free service</b>, as such Quadrans cannot be held responsible for any loss or damage.<br>
-            Please print or save this page and store it in a safe place for later reference and use.</br>
-            With those it's easy to proove ownership, timestamping, time of existence, consistency and immutability of data.</p>
-            <p>It is necessary to:
-            <ul style="padding: inherit; list-style-type: inherit;">
-                <li>store the original data at the time of this notarization</li>
-                <li>store this page with the notarization data</li>
-            </ul>
-            <p>Quadrans will not store any of those. No guaranties are provided that this page will still be available at any time in the future.</br>
-            Therefore the owner of the data and email address is responsible for the storage of both.</p>
+            <p>This is a direct validation of transaction data concerning a notarization from a Quadrans Node.<br>
+              Please note that Quadrans Foundation does not store a copy of the notarized data, nor has information about it's content or validity.<br>
+              The following is an independent observation of the transaction data done for your convenience and can be done independently by any user
             <p>All the following steps make extensive use of the <a href="https://en.wikipedia.org/wiki/Cryptographic_hash_function" 
-            target="blank">cryptographic hash function</a> (<a href="https://en.wikipedia.org/wiki/SHA-2">SHA256</a>) on binary bytes strings, 
-            here represented in their exadecimal notation.</p>
+            target="blank">cryptographic hash function</a> (<a href="https://en.wikipedia.org/wiki/SHA-2">SHA256</a>).</p>
 
-            <h2>1) Getting to the evidence</h2>
-            <p>The evidence is the double hash of the concatenation of 2 binary hashes of data available to the sender: </p>
-            <ul style="padding: inherit; list-style-type: inherit;">
-                <li>the hash of the original data/document and </li>
-                <li>the hash of email address thar the sender used</li>
-            </ul>
-            <div class="datagrid" style="overflow-x: scroll;">
+            <h2>Transaction data</h2>
+            <p>Analizing the data in the provided transaction <a href="https://explorer.quadrans.io/tx/${transactionHash}" target="_blank" rel="noopener noreferrer">${transactionHash}</a></b><br>
+            with <a href="https://notarize.quadrans.io/node/abi" target="_blank">the matching contract ABI</a> the following data was found: </p>
+
+            <div class="datagrid" >
                 <table border=0 width="100%" class="tg">
-                    <tr><td width="20%">document/data hash</td><td width="80%">${docHash}</td></tr>
-                    <tr class="alt"><td>owner email hash</td><td>${emailHash}</td></tr>
-                    <tr><td>resulting evidence</td><td>${evidence}</td></tr>
+                    <tr class="alt"><td width="20%"><b>Transaction data:</b></td><td width="80%">&nbsp;</td></tr>
+                    <td>transaction hash:</td><td><a href="https://explorer.quadrans.io/tx/${transactionHash}" target="_blank" rel="noopener noreferrer">${transactionHash}</a></td></tr>
+                    <tr class="alt"><td>block number:</td><td><a href="https://explorer.quadrans.io/block/${blockNumber}" target="_blank" rel="noopener noreferrer">${blockNumber}</a></td></tr>
+                    <tr class="alt"><td>block hash:</td><td><a href="https://explorer.quadrans.io/block/${blockHash}" target="_blank" rel="noopener noreferrer"></a>${blockHash}</a></td></tr>
+                    <tr class="alt"><td>block timestamp:</td><td>${blockDateTime}</td></tr>
+                    <tr class="alt"><td>notarizazion sender:</td><td>${sender}</td></tr>
+                    <tr class="alt"><td>smart contract address:</td><td>${contract}</td></tr>
+                    <tr class="alt"><td>raw data:</td><td><pre style="background-color: #F0F0F0; font-size: 10; margin: 0px; padding: 5px; font-family: monospace; border-radius: 6px; white-space: pre;" >${rawData}</pre></td></tr>
+                    <tr class="alt"><td><b>Notarized data:</b></td><td>&nbsp;</td></tr>
+                    <tr class="alt"><td>file name:</td><td>${_filename}</td></tr>
+                    <tr class="alt"><td>file hash:</td><td>${_filehash}</td></tr>
+                    <tr class="alt"><td>notes:</td><td>
+                      <pre style="background-color: #F0F0F0; font-size: 10; margin: 0px; padding: 5px; font-family: monospace; border-radius: 6px; white-space: pre;" >${_notes}</pre>
+                    </td></tr>
                 </table>
             </div>
-
-            <p> Using any Linux console, it is possible to check the evidence using the hash submitted for the data [hd] and the hash of the email address [he] used with:
-            <pre style="background-color: #F0F0F0; font-size: 10; margin: 0px; padding: 5px; font-family: monospace; border-radius: 6px; white-space: pre;" >echo -n [hd][he] | tr "[:lower:]" "[:upper:]" | xxd -r -p | sha256sum | xxd -r -p | sha256sum</pre>
+            <p>&nbsp;</p>
+            <p>If you need further verification please use the <a href="https://notarize.quadrans.io/node/abi" target="_blank">smart contrac ABI</a> to decode the transaction receipt and extract event logs and/or
+              decode the hex data in the 'raw data' field into ASCII format to get the notarization parameters.</p>
+            <p>Check that the hash (SHA256) of the document ${_filename} is ${_filehash}.</p>
+            <p>If all those element match than you have solid proof that that : 
+              <u>
+                <li>the document was notarized on Quardans blockchain </li>
+                <li>by the owner of the wallet whose address is ${sender},</li>
+                <li>that the content of the file/data did not change over time,</li> 
+                <li>and that it dates ${blockDateTime}.</li>  
+              </u>
             </p>
-
-            <p>According to the properties of cryptographic hash functions, excluding the extremelly unlikely event of
-                collisions, that evidence can only result as hash of the to previously provided elements.</p>
-
-
-            <h2>2) Merkle Proof</h2>
-            <p>The evidence is stored with many others into a covenient data structure called 
-            <a href="https://en.wikipedia.org/wiki/Merkle_tree" target="blank">Merkle Tree</a>. 
-            All those evidences are coupled and hashed together in a binary tree until a single hash can be derived, called Merkle Root.<br>
-            In order to proove matematically that an evidence is part of a merkle tree, a list of the other hashes (called Merkle Proof) must be 
-            provided, and those have to be hashed together and result in the same Merkle Root.</p>
-            <p>For this particular evidence the list of hashes is :</p>
-            <pre style="background-color: #F0F0F0; font-size: 10; margin: 0px; padding: 5px; font-family: monospace; border-radius: 6px; white-space: pre;" >${proofList}</pre>
-
-            <h2>3) Merkle Tree</h2>
-            The correct combination of those hashes to get to the Merkle Root is:
-            <pre style="background-color: #F0F0F0; font-size: 10; margin: 0px; padding: 5px; font-family: monospace; border-radius: 6px; white-space: pre;" >${proofTree}</pre>
-            This clearly shows :
-            <ul>
-                <li>the <b>Merkle Root</b> (in bold) as calculated by the other hashes in the proof</li>
-                <li>the data <b>evidence value</b> (in bold) as described in Point 1 </li>
-                <li>the other <i>proof hashes</i> (in italic) </li>
-                <li>the combination of the other hashes (calculated from previous hashes)</li>
-            </ul>
-
-            <p>Those hashes are calculated on binary numeric values (byte arrays). Using any Linux console it is possible to check each pair of hashes [h1] and [h2] with:
-            <pre style="background-color: #F0F0F0; font-size: 10; margin: 0px; padding: 5px; font-family: monospace; border-radius: 6px; white-space: pre;" >echo -n [h1][h2] | tr "[:lower:]" "[:upper:]" | xxd -r -p | sha256sum</pre>
-            </p>
-
-            <p>This proves that the evidence <span style="overflow-wrap: break-word; word-break: break-word;">${evidence}</span> is part of the merkle root <span style="overflow-wrap: break-word; word-break: break-word;">${merkleRoot}</span></p>
-
-
-            <h2>4) Blockchain Notarization</h2>
-            <p>Provided that the evidence is part of the merkle root, that specific value has been notarized in the Quadrans blockchain
-            in this position and date:</p>
-            <div class="datagrid" style="overflow-x: scroll;">
-                <table border=0 width="760" class="tg">
-                    <tr><td width="20%">blockDateTime</td><td width="80%">${blockDateTime}</td></tr>
-                    <tr class="alt"><td>blockNumber</td><td><a href="${explorer}/block/${blockNumber}">${blockNumber}</a></td></tr>
-                    <tr><td>blockHash</td><td><a href="${explorer}/tx/${blockNumber}">${blockHash}</a></td></tr>
-                    
-                    <tr class="alt"><td>transactionHash</td><td><a href="${explorer}/tx/${transactionHash}">${transactionHash}</a></td></tr>
-                    <tr><td>sender</td><td>${sender}</td></tr>
-                    <tr class="alt"><td>rawData</td><td><span style="overflow-wrap: break-word; word-break: break-word;">${rawData}</span></td></tr>                    
-                </table>
-            </div>
-            <!-- <div align=right>
-                Document Notarization number : ${docCounter}
-            </div> -->
-            <p>It is possible to use <a href="${explorer}" target="blank">Quadrans Explorer</a> to see that <a href="${explorer}/tx/${transactionHash}">transaction</a>
-                and inspect it's content. The relevant data are stored in the transaction's event logs.</p>
-
-            <h2>5) Transaction Analysis</h2>
-            <p>With the merkle tree and the transaction it was recorded in, it is possible to use <a href="https://web3js.readthedocs.io/en/v1.2.0/" target="blank">web3 api</a> to get the
-            <a href="https://web3js.readthedocs.io/en/v1.2.0/web3-eth.html?highlight=receipt#gettransactionreceipt">transaction receipt</a>.<br>
-            It is necessary to have the <a href="https://notarize.quadrans.io/resources/contract_abi.txt" target="blank">smart contract ABI</a>. Sample code for this operation is provided in <a href="https://notarize.quadrans.io/resources/checker.py" target="blank">python</a> and javascript.</br>
-            It is also necessary to have access to a <a href="${site}/how-to/install-quadrans-node/" target="blank">free Quadrans Node</a>.</p>
             
-            <p>Running that procedure the result is the following:
-            <div class="datagrid" style="overflow-x: scroll;">
-                <table border=0 width="100%" class="tg">
-                    <tr><td width="20%">_email</td><td width="80%">${email}</td></tr>
-                    <tr class="alt"><td>_storage</td><td>${storage}</td></tr>
-                    <tr><td>_hash</td><td>${merkleRoot} (merkle root)</td></tr>
-                </table>
-            </div>
-            </p>
-            <p>The recorded "_hash" value matches the merkle root, this shows that the all the evidences, with the provided merkle proof, where successfully notarized
-            on the Quadrans blockchain.</p>
+            You can refer to this proof either using <a href="${page}">this page address</a> or by using the QR code:
+
+            <div>${qr}</div>
+
             <p>Don't trust, verify.</p>
             <div align="right" style="padding-right: 180px;"><b>Quadrans Foundation</b></div>
 

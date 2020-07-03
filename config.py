@@ -7,10 +7,7 @@ web3 = {
 }
 
 templates = {
-    "pageTemplate1"     : "/var/www/qrscan/templates/page_template.html",
-    "plainTemplate1"    : "/home/emcy/Dev/Contracts/SimpleTimestampingService/templates/email_template.txt",
-    "pdfTemplate1"      : "/home/emcy/Dev/Contracts/SimpleTimestampingService/templates/pdf_template.html",
-    "htmlTemplate1"     : "/home/emcy/Dev/Contracts/SimpleTimestampingService/templates/email_template.html",
+    "pageTemplate1"     : "/var/www/node/templates/page_template.html",
 }
 
 paths = {
