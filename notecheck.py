@@ -32,10 +32,7 @@ def qrcreate(url):
     qr.svg(b, scale=4, module_color="#4C4D9F")
     return b.getvalue().decode('utf-8')
 
-
 ## ROUTES ###
-
-
 
 @app.route("/")
 def hello():
@@ -49,14 +46,12 @@ def sendABI():
 @app.route("/<tx>")
 def transaction(tx): 
 
-    print("entering with tx:", tx)
     # Web3 Entry point to contract
     web3 = Web3(IPCProvider(ipcMiddleware))
     # web3.middleware_stack.inject(geth_poa_middleware, layer=0)
     web3.middleware_onion.inject(geth_poa_middleware, layer=0)
     contract =  web3.eth.contract( address = contractAddress, abi = contractABI )
     
-    print("searching transaction")
     # Read data from BC
     try:
         tx_receipt = web3.eth.getTransactionReceipt(tx)
